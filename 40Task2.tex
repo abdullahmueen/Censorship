@@ -1,0 +1,136 @@
+%% !TEX root = CAREER II.tex
+
+
+
+\section{Task 2. \Ttwo}
+
+%proposed problem
+Our major focus is on temporal mining in social media to identify abuse and inconsistencies. Recent literature demonstrates the effectiveness of graph- and text-based methods in finding abusive activities \cite{Akoglu:13,Jindal:08,Jindal:10}. We propose to augment temporal pattern mining with graph-based, spatial and textual properties to achieve {\it interpretability} from multiple perspectives. We propose one specific pattern for each context with motivating scenarios. %Each of these patterns shows how heterogeneous context can strengthen inconsistent and abusive activity detection.
+
+\paragraph{Challenge:} The main challenge in using heterogeneous context while mining temporal patterns is {\it scalability}. Traditionally, temporal pattern mining is computationally expensive for the high-dimensional and dense nature of the data. Adding multiple contexts worsens the problem.
+
+
+\subsection{\Ttwotwo}  
+
+%problem formulation
+Sources of time series data often form a connected structure with useful information embedded, such as user-user interactions and user-product interactions from various social media, where the product can be hotels, articles, topics and so on. We can formulate this contextual information as a graph $G(V,E)$, where $V$ includes users, products, reviews, topics, locations, etc. An edge between two vertices indicates the relationship we are interested in. Each of the vertices in the graphs generates a set of time series ($T$) of two kinds: \textbf{\textit{structural time series}} (e.g. degree, SimRank \cite{Jeh2002}) and \textbf{\textit{attribute time series}} (e.g. number of likes, number of retweets). We propose to find the {\it clique correlation pattern} in such data as defined below.
+
+
+\paragraph{Clique Correlation Pattern:} A clique correlation pattern is a set of vertices that form a near-clique or dense subgraph {\it and} a correlated cluster in one or more of their time series. Such pattern combinations can provide strong evidence of social media abuse and pose significant research challenges in terms of scalability and optimality.
+
+%Graph Example
+\paragraph{Example:} The two accounts shown in the Figure \ref{fig:intro}(right) have a large number of retweets (over 70K) from only {\it twelve users}. Correlated groups can reveal bots in social media, however, the supporting accounts that are not correlated among themselves can be found by locating the bi-partite clique in the {\it tweeter-retweeter graph}. Vertices of such a graph are user accounts and an edge shows one vertex retweeting from the other vertex with a predefined minimum frequency.
+
+\paragraph{Related Work:}
+
+A number of recent research mines and models dynamic graphs mostly based on structural features \cite{Tong2008,Liangyue2015} with no attributes. Facets \cite{Yongjie2015} is a recent work that considers the temporal aspects by modeling the time series using dynamical systems. Identifying attribute correlation and dense subgraphs is considered in \cite{Silva2012} for relatively static graphs such as citation network. In \cite{CoDyn,trendDyn}, the authors explore the idea of co-evolving attributes in collaboration network. In \cite{Rossi2013}, the authors have modeled hidden state transitions of the vertices over time.
+
+Our approach is different from most of these work in principle. We focus on pattern mining instead of modeling the time series. Our attributes are real-valued time series that frequently changes every minute, if not second, compared to discrete time series changing in months as in author network.
+
+
+%% Our proposed scenario evolves every minute compared to monthly changes in author-network.
+
+
+
+
+\paragraph{Proposed Activity:}
+
+We will explore two approaches: {\it cliques-first} and {\it clusters-first}. We expect the cliques-first method to prune candidate clusters quickly on a sparsely connected graph. In contrast, the clusters-first method prunes cliques when users are mostly uncorrelated. Ideally, finding correlated clusters is less-expensive than finding cliques exactly. In reality, the overall performance may be dominated by their mutual interplay in pruning one another. To address scalability challenges, we will employ all known techniques for cliques and clusters. More specifically, we will use pruning techniques based on triangular inequality \cite{Mueen:09a,Jagadish:05} and clique enumeration techniques based on random walks \cite{Uno2008}.
+
+
+%\paragraph{Evaluation Plan:}
+%
+%By definition large clique-correlation patterns are significant indication of manipulated structure in social media data. We will be testing the accuracy of the algorithms by planting clique-correlation patterns in both synthetic and real data. We will also measure scalability in wall-clock time for the alternative strategies.
+
+\subsection{\Ttwothree}
+
+Entities in social media such as users, businesses and articles are generally associated with location information. These entities involve in a sequence of social activities, which form a {\it social trajectory}. For example, the sequence of locations a user checks in a day. Social trajectories can be treated as a two dimensional (latitude and longitude) time series, therefore, falls within the scope of this proposal.
+\paragraph{Semantic Anomaly in Social Trajectory:} Anomalies in social trajectories are detectable based on {\it semantic information} such as maps, transportation schedule, etc.
+%Location Example
+\paragraph{Example:} The location sequence of {\it check-in}s at businesses can be anomalous if the user checks in at every store in a shopping mall in a short period of time. Similar anomaly can be found when a trajectory is too irrational (e.g. passing the same street many times as in Figure \ref{fig:extra}(top)). These are almost certainly bot behaviors that can be detected using maps. Another example is given by the authors in \cite{Gionis2014}, who found social trajectories at speed faster than airplanes. Note that, there are third party services like \url{swarmapp.com} that anyone can use to share a location in Twitter without being in that location physically.
+
+
+
+%In addition to the sequence of locations, the time between each location is equally powerful to reveal inconsistencies. We find reviewers with large number of reviews in a the same day spanning 17 states in US.
+
+% Location information can be used to test if a human is traveling faster than airplane, if a hotel is avoiding natural disaster, if inconsistent users and hotels show any spatial clustering and so on. 
+\paragraph{Challenge:} 
+%Our hypothesis is that a spammer uses a list of locations of paid customers to check-in or review. To increase throughput and avoid getting caught, the spammer must randomized the locations and visit the locations by as many user accounts he can.
+
+Integrating information, such as street address of a lattitude-longinude pair, speed limit, etc., from geographic databases with social trajectories is the key challenge.
+%GPS-trajectories generally have a uniform sampling at a reasonably constant rate while social trajectories have
+Social trajectories are different from GPS trajectories for their ultra low resolution, asynchronicity and non-uniformity. Social trajectories are different from animal trajectories, because wild animals, such as birds, can choose trajectories freely, while social trajectories are embedded on a road network. Therefore, many existing algorithms for finding anomalous trajectory will not work on social trajectories.
+
+\begin{wrapfigure}{r}{0.2\textwidth}
+\vspace{-1.5cm}
+\begin{center}
+\includegraphics[width=1.3in]{Figures/Presentation1.pdf}
+\vspace{-0.6cm}
+\caption{(top) An irrational social trajectory for 20 minutes. (bottom) Toy examples of tensor motifs.}
+\label{fig:extra}
+\end{center}
+\vspace{-1.3cm}
+\end{wrapfigure}
+
+
+
+\paragraph{Related Work:}
+
+
+Researchers mine several patterns from trajectory data such as periodic behavior \cite{Li2011}, following behavior \cite{Li2013} and flocking behavior \cite{Vieira2009}. Annotating GPS trajectories using social media data \cite{Parent2013,Li2011} is also studied. 
+In \cite{Wu2015}, the authors use geo-tagged tweets to semantically annotate GPS trajectories and find {\it why} a person visits a certain place. In \cite{Yan2013}, the authors show that semantic trajectories are becoming more prevalent. Understanding inconsistent trajectories to determine social media abuse is a completely new direction that we are proposing.
+
+%Semantic trajectory patterns include the annotations of the locations and temporal features at a point in time.
+
+
+\paragraph{Proposed Activity:}
+
+We will use the OpenStreetMap project to create the most likely trajectory of a random sequence of locations. We will create a list of semantic rules to check against each social trajectory. We will {\it iteratively apply} the rules to identify anomalies and use the anomalies to generate new rules.
+
+
+\subsection{\Ttwofour}
+
+Posts associated with an entity in social media can form a frequency time series for any group of words. Such frequency time series can show interesting changes in sponsored account's behavior. 
+
+
+%the above formulations can easily be generalized to even higher order by adding dimensions for new word groupings.
+Formally, we collect $n$ users each having $k$ frequency time series for different word groups of $p$ different activities (i.e. share, retweet, etc.). In this abstraction, it is a high-order tensor (i.e. $n\times k\times p\times T$) that has been shown effective to model many data mining problems. Temporal behavior in tensors is modeled by dynamical systems \cite{Rogers2013,Yongjie2015}. However, we focus on finding temporal patterns in tensors. Specifically, we define a novel pattern called {\it tensor motif} and propose to build scalable algorithms to find it.
+
+
+
+\paragraph{Tensor Motif:} A tensor motif is a repeating segment of a tensor at any subspace with a minimum duration.
+
+
+\paragraph{Example:} Trolls post a lot of messages and they often automatically delete older posts in a short period of time to maintain their benign appearances. A group of trolls often deletes in a synchronous manner using the same tool although their overall activities are not synchronous. We have found two such trolls ({\it Sleeksmokeit7} and {\it Suwaidi\_Amigo}) that are supported by the ruling party (AKP) in the recent Turkish parliamentary election. To find more such trolls we need a four order tensor with the obligatory time dimension and three other dimensions: word group (e.g. {\it www, youtube}), activity type (e.g. {\it deletion, retweet}) and user accounts. Tensor motif, in this case, repeats over the two users for the same time, keyword and activity. 
+
+
+\paragraph{Related Work:}
+
+In \cite{Yongjie2015}, the authors show a high-order time series mining algorithm with a focus on imputation and prediction. Tensor decomposition is a very useful technique to extract knowledge from such a complex data structure \cite{kolda2009tensor}. In \cite{Minnen:07,Minnen:07a}, the authors consider multidimensional motifs in time series data. Tensor motifs are generalization of multidimensional motifs in an even higher order tensor with more variables. Word frequency time series have recently been used to identify events \cite{Liang2015}. 
+%Our proposed research plan will produce novel algorithms to find tensor motifs for troll identification on social media.
+
+
+
+
+%Dynamic graph mining techniques to discover anomaly and frequent subgraph in social network graph. However, our method is principally different because we consider time series of node-properties that are both related (e.g. number of followers) and unrelated (e.g. number of pins) to graph topology.
+
+
+
+
+
+\paragraph{Proposed Activity:}
+
+We will explore three types of algorithms: {\it exact algorithms} with admissible pruning techniques, approximation algorithms with {\it exact error bound}, and approximate algorithms with {\it probabilistic guarantees}. We will take a pattern growth approach by starting with motifs at every unidimensional time series in the tensor and merge the patterns to form maximally repeating patterns. We will also explore the hardness of the methods before developing the exact and approximate algorithms. To produce the word groups, we will use a set of standard techniques, such as a sentiment classifier \cite{manning14} and a topic modeler \cite{TopicModel}.
+
+
+
+%Connections of the users in a graph provide valuable prior knowledge to evaluate temporal patterns. Apart from the traditional follower-following (i.e. user-user) graphs, we will produce several other dynamic graphs such as tweet-retweet, tweeter-retweeter, etc. We find thousands of accounts that only retweet tweets from a very small pool of original accounts. Like am absolute constant growth rate of followers, a fixed set of retweet sources is unusual. 
+
+
+
+
+
+%A normal user reveals interest areas by the accounts s/he follows. An abnormal user typically shows no bias to any topic or concepts. 
+
+
+\subsection{Evaluation} The above subtasks describe novel unsupervised patterns that share a common evaluation scheme. We will plant synthetic patterns in both real and synthetic data (e.g. tensors, trajectories) to generate ground truth. We will measure {\it recall} and {\it precision} against this data. We will comprehensively run the pattern discovery algorithms on all three types of media: micro-blogs, reviews and comments. We will manually investigate each pattern based on additional information from the hosting sites and news media to judge the {\it correctness}. Our baseline algorithms will be natural combinations of techniques for each component of the desired patterns (such as unidimensional motif discovery, cliques in a graph, etc.). We will evaluate {\it scalability} of our method with respect to these baselines on wall-clock time.

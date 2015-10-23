@@ -1,0 +1,172 @@
+%% !TEX root = CAREER II.tex
+
+
+\section{Task 1. \Tthree}
+
+%What is time series invariance
+%{\it What is invariance in time series mining?}
+Invariance is the property of a distance measure to remain unchanged regardless of changes in the time series data\footnote{We will use the term invariance as a countable noun.}. For example, Dynamic Time Warping (DTW) is a warping invariant distance measure for time series data. Figure \ref{fig:Invariance} shows a set of common invariances which are simple, intuitive and easy to justify applicability in a domain. Thus, invariances are the key to {\it interpretable} and {\it adaptive} pattern mining.
+
+\begin{wrapfigure}{r}{0.45\textwidth}
+\vspace{-0.9cm}
+\begin{center}
+\includegraphics[width=3in]{Figures/Invariance1.pdf}
+\caption{Invariances applied to the red sine wave to make it identical to the blue sine wave. Computation cost of each invariance is mentioned. The better of the pairs is checked.}
+\label{fig:Invariance}
+\end{center}
+\vspace{-.7cm}
+\end{wrapfigure}
+
+%{\it How are invariances achieved in algorithms?}
+Typically, invariances are achieved by pre-processing, converting and post-processing Euclidean distance, which calculates a one-to-one alignment between the comparing time series and, thus, has no invariance. Any change in one of the time series will change the Euclidean distance irrespective of the other time series.
+%Figure \ref{fig:Invariance} shows different invariances used in time series data mining. 
+{\it Scaling} (both uniform and non-uniform), {\it rotating} and {\it shifting} one time series against the other constitute three pre-processing invariances. To achieve {\it amplitude} and {\it offset} invariance {\it $z$-normalization} in the y-axis is commonly performed. Warping the time axes of the two comparing time series with an optimal alignment gives us {\it warping invariant} distance (e.g. DTW). Sliding the shorter time series against the longer one to find an optimal one-to-one alignment gives us {\it slide-invariant} distance. Sliding both the time series identical steps in opposite directions produces {\it cross-correlation}. A generalization of slide-invariant distance is {\it lag-invariance} which can also be achieved by cross-correlation. After a distance is calculated, {\it complexity corrections} and {\it length corrections} are done on the distance value as post-processing steps to allow proper comparison of pairs.
+
+An ability to dynamically select a combination of invariances has enormous potential. We test an oracle classifier on forty two datasets in UCR archive \cite{UCRArchive} where the oracle can {\it always pick the correct set of invariances reverse engineered from the data}. We gain, on average, 7\% (up to 17\%) accuracy by the oracle classifier over the best classifier with a single invariance. As impressive as the opportunity is, there has not been any attempt to avail it. 
+
+
+
+%Warping invariance is achieved by Dynamic Time Warping (DTW) distance, complexity invariance is achieved by Complexity Invariant Distance (CID) \cite{Batista:14} and so on. What are the costs of invariances? Typically invariant distance functions are costlier than simple Euclidean distance. Time complexity of DTW is $O(n^2)$, CID is {\it three times} more costly than Euclidean distance, rotation invariant distance is $O(n^2)$ and so on.
+
+Social media data show invariances to many of the above mentioned properties in various combinations. We have observed rotated, lagged and warped tweeting behavior of bots (e.g. for different server locations across world), yearly rotation and non-uniform scaling in review behavior, and varying periodicity (weekend vs. weekdays) in commenting behavior. For example, Figure \ref{fig:intro}(right) points at warped and lagged alignment between tweeting behaviors from two different users. In addition, z-normalization is required for frequency time series to normalize unwanted differences between, for example, old and new profiles.
+
+% or male and female users.
+
+%\begin{wrapfigure}{r}{0.3\textwidth}
+%\vspace{-1.0cm}
+%\begin{center}
+%\includegraphics[width=2.0in]{Figures/Oracle.pdf}
+%\caption{Accuracies of the Oracle 1-NN classifier against the best single-invariance 1-NN classifier.}
+%\label{fig:Oracle}
+%\end{center}
+%\vspace{-1.2cm}
+%\end{wrapfigure} 
+
+Finding anomaly and repetition in time series data are common in other scientific domains such as entomology \cite{Mueen:09a}, nematology \cite{Brown:13}, anthropology \cite{zhu:09} and activity recognition \cite{Mueen:11}. The impact of this task will reach beyond social media and broaden the computational capabilities scientists can exploit in their data analysis.
+
+%First example is in understanding clusters of genes affecting the locomotion of a nematode (\textit{Caenorhabditis elegans})  and the second example is in understanding the repetitive structure of human brain activity recorded through \textit{Electroencephalography} (EEG) \cite{Mueen:09a}.
+
+\paragraph{Related Work}
+
+Existing algorithms treat invariances {\it independently}, for example, warping invariance \cite{Keogh:02}, complexity invariance \cite{Batista2013}, rotation invariance \cite{Vlachos2004}, lag invariance \cite{Sakurai:05}, uniform scaling \cite{Yankov:07} and slide invariance \cite{Mueen:11} among others. Our approach is to select {\ul{\it the right set}} of invariances instead of ensembling all of them as in \cite{Lines2014}, which is more expensive and sometimes suboptimal.
+
+ 
+%Note that, ensemble of nearest neighbor classifiers with smart voting mechanisms achieve a portion of the potential benefit with the expense of running several nearest neighbor classifiers as opposed to one \cite{Lines2014}.
+
+\paragraph{Challenge:} The trivial method to find the best combination of invariances for a specific dataset is to {\it try all combinations}. This is intractable for the exponential number of combinations of invariances. Therefore, retaining scalability of existing methods when a combination of invariances are applied is the key challenge. Ideally, we desire an optimal set of invariances in mining algorithms with very similar time complexity to one or no invariance.
+
+\subsection{\Tthreeone}
+
+\begin{wrapfigure}{r}{.43\textwidth}
+\vspace{-1.3cm}
+\[ DTW(x,y) = D(n,m) \]
+\[ D(i,j) = (x_i-y_j)^2 + min \left\{ \begin{array}{l}
+         D(i-1,j)\\
+        D(i,j-1)\\
+        D(i-1,j-1)\end{array} \right. \]
+        \[    D(0,0) = 0, \forall_{i>0,j>0} D(i,0) = D(0,j) = \infty \]
+		\[	\forall_{|i-j|>w} D(i,j) = \infty \]
+\vspace{-0.7cm}
+\end{wrapfigure}
+Social media data exhibit time warping (Figure \ref{fig:intro}(right)). Dynamic Time Warping (DTW) is the distance measure to achieve warping invariance in pattern mining. For two time series $x$ and $y$ of length $n$ and $m$, {\it constrained DTW}, within a window of $w$ samples, is defined here.
+
+Unfortunately DTW is still expensive for large scale unsupervised pattern mining. For example, all-pair DTW distance computation, which is useful for clustering, requires at least $O(k^2nw)$ time, where $k$ is the number of time series. {\it We propose to develop warping invariant hashing techniques to speed up all-pair comparison}.
+
+
+
+
+%DTW distance can be normalized by the path-length to achieve a warping-invariant correlation measure with a range [-1,1]. Minimizing DTW distance effectively maximizes the warping-invariant correlation, so we stick with DTW distance to compare user activities. For more detail, we suggest consulting \cite{Keogh:02}.
+
+\paragraph{Example:}
+
+Tweet timestamps from different servers are often warped. For example, Figure \ref{fig:intro}(right) shows that two tweets at subsequent seconds from Alan are aligned to two tweets in the same second from FiIosofei.
+
+\paragraph{Related Work:}
+
+Dynamic time warping distance is the most effective distance measure for time series classification and clustering \cite{UCRArchive}. At least fifty papers (see \cite{mypage} for a bibliography) on DTW based methods have been published in top data mining conferences addressing scalability issues due to the quadratic complexity of DTW. Surprisingly hashing techniques for DTW have never been studied like it has been studied for Euclidean distance \cite{Datar2004}.
+
+%DTW based kernels have been developed in the literature which captures the warped spaces to develop better SVM classifiers for time series data.
+
+\paragraph{Challenge:}
+
+The key reason for no hashing technique till now is that DTW is {\it not a metric}. Most hashing techniques are based on triangular inequality and random projections, which do not work under warping. 
+
+
+\paragraph{Proposed Activity:}
+
+We propose to develop hashing techniques for DTW that gives us near real-time accuracy in all-pair distance computation under warping. DTW captures the essence of two other invariances: sliding and scaling. Our plan is to build hash functions targeting sliding and scaling invariances {\it separately} and {\it in combination} with a hope that neighboring time series under DTW distance will fall into the same buckets. Time series with low dimensionality and cardinality are the most suitable for such methods \cite{Hu2011}. The hashing scheme will exploit Johnson-Lindenstrauss lemma \cite{Bingham2001} by projecting the time series in random directions under sliding and scaling invariances.
+\textbf{Evaluation:} Hash functions will be empirically evaluated on synthetic data. We will use the ratio between within- and across-bucket DTW distances to estimate the goodness of the hash functions. The lower the ratio, the better the hash performance. Because provable guarantees are not possible for DTW, we will be comprehensive in our {\it empirical evaluation}. In addition to our datasets, we will evaluate our techniques on time series datasets from UCI and UCR archives.
+
+%We will measure speedup of the new DTW algorithm for sparse time series in comparison with the current best constrained DTW algorithms \cite{Mueen12}.
+
+
+\subsection{\Tthreetwo}
+
+As explained earlier, an invariant adds a new perspective to pattern matching with additional cost. In general, if we find a very good match by just using Euclidean distance, the same match would also be found by other complex distance functions. However, the converse is not true. Euclidean distance may not find a match that can be found using other invariances. When finding anomalous patterns in time series data, using just Euclidean distance is not enough because the anomaly could be explained by some other invariances. We introduce the notion of {\it maximally-invariant anomaly} which is anomalous under a {\it maximal} set of invariances such that no addition can explain the anomaly better. \textbf{Example:}
+{\it Discords} are anomalous temporal patterns, simply defined as the {\it furthest-nearest-neighbor} of a dataset under a distance measure\footnote{Chandola et al. compared 9 different methods and found discord to be the overall best method for anomaly detection \cite{Chandola:09}.}. A discord in the {\it number-of-followers} of  a small sample of Pinterest users shows several sharp drops to zero that indicate the user has deactivated and then activated the account during those drop events.
+
+%as shown in the Figure \ref{fig:discord}.  
+
+\paragraph{Challenge:} 
+
+The key challenge is {\it algorithmic}; understanding the relationships among invariances and coming up with a strategy to evaluate them without too much overlapping computation. Retaining {\it scalability} remains as the high level challenge. %Discord under no-invariance is a computationally expensive problem assuming
+
+
+
+\paragraph{Related Work:}
+
+
+We consider distance-based anomalies only. For statistical anomaly, which is more common in the literature \cite{Guttman,Grubbs,Chandola:09}, invariance does not make sense. Until now discords are studied for only Euclidean distances \cite{Yankov:07a,Li:13a,Luo:13}. No existing work considers maximally invariant anomaly detection in time series data. 
+
+
+\paragraph{Proposed Activity:}
+
+A simple way of finding the maximally-invariant anomalies is to use every invariance independently and create ranked lists of anomalies. Then, for each subset of invariances, find the anomaly appearing in {\it all} the lists in the subset whose lowest rank is the highest among other anomalies (a {\bf rank-based} approach). We will explore {\it pruning strategies} to ignore some subsets without finding the anomalies. We will also consider anomaly scores as well as ranks, to make a {\bf score-based} selection from the ranked lists.
+
+
+%Discord is a simple definition of anomalous pattern. We can extend discord as omni-invariant discord which is anomalous because there is no reasonable neighbor even if we consider all invariances. Clearly such an algorithm would be much more expensive than an algorithm to find discord under Euclidean distance only.
+
+Another approach is to find anomaly under {\it all known invariances} (i.e. omni-invaraince) with the hope that we can make it reasonably faster. Almost every invariance has lower bounds that can improve detection performance. {\it We propose to produce a common bounding technique for all of them}, which is non-trivial. For example, a hybrid of bounds in the time domain can speed up DTW \cite{Rakthanmanon2012}. In contrast, rotation invariant distance can be bound by ignoring phases in the Fourier transform of the time series. Achieving both is non-trivial because they work in different domains (frequency and time). 
+%Note that, omni-invariant anomaly is also maximally-invariant for some subset. If we can find omni-invariant anomaly {\it quickly}, finding the maximal subset is no longer needed.
+%We choose frequency domain to achieve a combined bound. Until now there is no explanation of time-warping in frequency domain. Our observation is that the higher frequencies are less important for warping. We hope to ignore them {\it safely} and produce bounds for warping distance. We also hope that frequency domain is {\it the} representation for a unified bound on omni-invariant distance. Note that, omni-invariant anomaly is also maximally-invariant for a subset of invariances, if we can find omni-invariant anomaly {\it quickly}, finding the maximal subset is no longer needed.
+\textbf{Evaluation:} We will plant anomalies in real and synthetic data to evaluate {\it detection accuracy} of our method. For scalability, we will compare the {\it execution time} of our method against that of the smartest algorithms for individual invariances.
+
+
+\subsection{\Tthreethree}
+
+
+%%%%%%%%%%%%%%%%%%
+
+%As explained earlier, an invariant adds a new perspective to pattern matching with additional cost. In general, if we find a very good motif just using Euclidean distance, the same motif would also be found by other complex distance functions as a special case. However, the converse is not true. We may not find a motif under several invariances by only using Euclidean distance. We formulate an incrementally invariant motif discovery problem as calculating increasingly more expensive invariances until a good motif is found.
+
+Repeated patterns in the same time series or correlated patterns across a set of time series potentially identify automated behavior in social media. However, similarity among patterns may not be observable without any invariance, and we do not wish to use unnecessary invariances too. A strategy to find repeated patterns (i.e. {\it motifs}) with a {\it minimal} set of invariances (as opposed to maximal in case of anomaly) is required. The notion of minimality is that no additional invariance would find new repetitions.
+
+\paragraph{Challenge:}
+
+There is no known ordering of invariances. There are some partial orders that we know. For example, any repetition found by Euclidean distance will also be found by DTW. However, it is not true for many other pairs. Therefore, finding the minimal set of invariances requires enumerating all combinations.	
+
+
+\paragraph{Related Work:}
+
+Time series motif (i.e. repetition) discovery was introduced in 2002 \cite{Lin:02} with a hash based technique to find repeated patterns in Euclidean space. Since then, numerous algorithms have been proposed focusing on many applications \cite{Tanaka:05,Patel:02,Castro:10,Tang:08,Narang:11}. 
+%Many of the methods for motif discovery are based on  searching a discrete approximation of the time series, inspired by and leveraging off the rich literature of motif discovery in discrete data such as DNA sequences. 
+Single-invariance techniques have been proposed in the literature for uniform scaling \cite{Yankov:07}, sliding-distance \cite{Mueen:11}, cross-correlation \cite{Mueen:14a} and rotation-invariance \cite{Vlachos2004}. There are algorithms to discover variable-length motifs \cite{Lin:12,Vit:11,Tang:08,Mueen:13}. There is {\it no work} on combining invariances for repetition detection.
+
+
+%The discretization boundary of the $y$-values are set to the levels that divide a normal distribution into $\alpha$ equal probability regions. 
+
+
+
+%Two things are needed. First an order of the invariances that will be added greedily to the distance functions and second, a way to measure the goodness of a motif based on support and significance.
+
+%Every invariance assumes an invariant condition. Conditions are generally independent of each other. Therefore, it is hard to find the correct combinations of all these conditions to discover unknown motifs. However, trying all combinations is not a feasible option.
+%
+%\paragraph{Example:}
+%
+%Therefore, we will execute a greedy strategy using the knowledge gained from T.2.1 that discovers motif as effectively as the optimum combination would do. Motif significance can be estimated the same way as we estimate in T.1.3.
+
+
+\paragraph{Proposed Activity:}
+
+%Although there is no particular ordering, w
+We will use an {\it iterative technique} to explore all combinations of invariances. We will find motifs based on Euclidean distance first. We will assess the significance of the detected motifs. Then, we will replace high quality motifs in the data with {\it random noise}. In the next iteration, we will find new motifs in the replaced dataset under another invariance (in an empirically chosen order) and continue this until there is no significant repetition or all the combinations have been used. Apriori-like principle to prune unnecessary computation is most likely true for the above process. If invariance $u$ produces a motif, then any combination having $u$ should produce the same or less significant motif. Therefore, if we do not find any significant motif for an invariance $u$, we can safely ignore combinations including $u$. \textbf{Evaluation:} We will plant synthetic motifs in both synthetic and real data to test {\it detection accuracies} of our algorithms. We will compare the pruning technique against the trivial methods and measure the {\it pruning efficiency}.

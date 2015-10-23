@@ -1,0 +1,61 @@
+%
+% This is a quick hack to set up a document in NSF's page layout
+% format.  I've only handled margins so far -- I assume that a
+% reasonable font like times or CMR should obey the font
+% requirements.  (Haven't checked this, though.)
+%
+% Terran Lane, 2002
+%
+
+% NSF specifies:
+%
+%Proposals must have 2.5 cm margins at the top, bottom and on each
+%side. The type size must be clear and readily legible, and conform to
+%the following three requirements: 1) the height of the letters must
+%not be smaller than 10 point; 2) type density must be no more than 15
+%characters per 2.5 cm; (for proportional spacing, the average for any
+%representative section of text must not exceed 15 characters per 2.5
+%cm); and, 3) no more than 6 lines must be within a vertical space of
+%2.5 cm. The type size used throughout the proposal must conform to all
+%three requirements. While line spacing (single-spaced, double-spaced,
+%etc.) is at the discretion of the proposer, established page limits
+%must be followed. (Individual program solicitations may eliminate this
+%proposer option.)
+%
+%While the guidelines specified above establish the minimum type size
+%requirements, PIs are advised that readability is of paramount
+%importance and should take precedence in selection of an appropriate
+%font for use in the proposal.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesFile{nsfformat.sty}[2002/9/25 v0.1
+		Set up page for NSF style guidelines]
+
+\setlength{\paperheight}{11in}
+\setlength{\paperwidth}{8.5in}
+\setlength{\pdfpagewidth}{\paperwidth}
+\setlength{\pdfpageheight}{\paperheight}
+
+% LaTeX inserts a 1 inch border by default before margins are even
+% counted, so we have to subtract that back out.
+\setlength{\oddsidemargin}{-1in}
+\setlength{\topmargin}{-1in}
+% Now add back in required margins
+\addtolength{\oddsidemargin}{1in}
+\addtolength{\topmargin}{1in}
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-1in}
+\addtolength{\textheight}{-1in}
+%\addtolength{\textheight}{-\footskip}
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-1in}
+\addtolength{\textwidth}{-1in}
+% And get rid of the marginal paragraphs.  Who thought this was a good
+% thing to have by default anyway?  Oh yeah -- Knuth did.  <shrug>
+\setlength{\marginparwidth}{0in}
+\setlength{\marginparsep}{0in}
+% And we're not using headers
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+
+\endinput

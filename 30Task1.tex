@@ -1,0 +1,123 @@
+%% !TEX root = CAREER II.tex
+
+
+
+\section{Task 3. \Tone}
+
+
+Our final task is to monitor social media users in near {\it real time} to detect inconsistent behavior as quickly as possible. We propose four temporal mining tasks capable of detecting abusive actions. Each of the tasks requires significant innovation and novel improvisation of temporal pattern mining algorithms. 
+
+%The proposed temporal mining algorithms are adaptive to the evolution of the abusive behavior.
+
+\subsection{\Toneone}
+
+%Problem: 
+%{\bf Problem:} %why bots
+Although not all bots are bad, bots can achieve a high number of followers quickly and can be used to spam information \cite{BotFools}. A significant presence of bots on social media will make several social metrics useless \cite{Asur2010}. Social media sites, such as Twitter, strictly suspend such accounts, including accounts that impersonate popular users \cite{Twitter} (Alan bot in Figure \ref{fig:intro}(right)).
+
+\paragraph{Novelty:} Most existing works, as well as Twitter Rules \cite{Twitter}, focus on per-account features to distinguish between fraudulent and innocent accounts \cite{Aggarwal:2013,Thomas:11,Zhang:11}. Clever spammers may have started mimicking humans to avoid being detected and suspended by these methods \cite{Danezis2009}. However, humans are slow compared to machines, while spammers wish to perpetually increase followers. In our preliminary investigation, we find spammers increase throughput by creating group of accounts that behave the same as a human. 
+
+%In other words, instead of having one bot account which tweets ten thousand times per day, they prefer to have one thousand bots, each tweeting ten times per day.  
+
+Instead of per-account features, we consider finding highly correlated groups of user accounts. Such accounts are likely to be bot operated as it is not humanly possible, even by chance, to produce identical posting behavior by different users. For example, the chance of two random users posting exactly at the same ten seconds in an hour is $~3600^{-10}$. Such an event can happen by chance only if there are more than a trillion active users.
+
+%\paragraph{Example:} (e.g Figure \ref{fig:intro}(right)). 
+
+%Bots are fairly common on social media. Not all bots are bad, however, bots can achieve high number of followers quickly and later, can be used to market or spam information \cite{BotFools}. Many social metrics are calculated on social media data. Significant presence of bots on social media will turn all those metrics useless. Therefore, social media sites such as Twitter strictly suspend such accounts \cite{Twitter} that impersonate and abuse. For example, in \cite{Thomas:11}, authors have showed that 92\% of the suspended accounts in Twitter are detected within three days of creation. However, current methods social media sites use to detect and prevent bots are clearly insufficient and overpowered by bot owners \cite{BotFools}.
+
+
+
+%The motivation of the bot-owner is to pretend a human while keep automating activities intermittently to increase number of followers. Finally, the bot-owners intention is to sell these accounts to marketers and spammers. Their exist many such services that sell followers such as \cite{Gnip}.
+
+
+
+\paragraph{Related Work:}
+
+There is no work on monitoring {\it millions} of time series under warping invariance. StatStream \cite{Zhu:02}, sketch approach \cite{Cole:05} and BRAID \cite{Sakurai:05} monitor thousands of signals without warping. In \cite{Matsubara2014}, the authors monitor millions of co-evolving signals to find anomalies. Detecting spam in Twitter stream has been well researched in the last five years. A good characterization of spammers in Twitter is presented in \cite{Grier2010}. In \cite{Thomas:13}, the authors categorize the spam detection strategies based on timeliness: \textit{at-abuse} methods and \textit{soon after registration} methods. ``Honeypots'' are set to attract reasonable spamming accounts in Twitter \cite{Stringhini2014,Lee2010}. Behavioral patterns of urls to identify spam tweets are traced in \cite{Cao2015}.
+{\it Other relevant research} includes detecting campaign promoters in Twitter \cite{Li:14}. Offline analysis to discover \textit{link farming}, by which spammers acquire a large number of followers, is discussed in \cite{Ghosh2012}.
+
+\paragraph{Challenges:}
+
+Keeping pace with the streaming APIs is a challenging ask when calculating all-pair correlation. Note that warping invariant correlation/distance is expensive even for offline monitoring. Observable correlated groups may exist for certain keywords (e.g. www, youtube, etc.). Finding the best set of keywords requires an extensive trial-and-error process.
+
+\paragraph{Proposed Activity:}
+We propose to develop Dynamic Time Warping distance for activity streams. Sparsity in the activity streams of social media can be exploited to develop efficient algorithms. For example, the solid time series shown in Figure \ref{fig:intro}(right) is best represented by ten pairs of $(t_i,v_i)$ for $i=1,2,\ldots,m(=10)$ where $t_i$ is a time stamp and $v_i$ is the number of tweets in that time stamp. Although the lengths of the time series is $n=360$ seconds, our proposed DTW algorithm should work in much less time than $O(n^2)$ and very close to $O(m^2)$. For further scalability, more compressed representation such as run-length encoding may be used. As last resort, we may use lossy compression with approximation guarantees on DTW distance to retain interpretability.
+%We propose to use intermediate disk buffers to achieve as much speed as a disk can write. The delay introduced by this process will not be as significant as offline algorithms. The rate at which we can write streaming events in disk is enough for {\it all} social media APIs.
+\textbf{Evaluation:} Measuring goodness of real time algorithms is tricky because of {\it multiple degrees of freedom}: the size of the history that an algorithm keeps in memory, the speed of receiving the data and finally, the number of events (e.g. tweets) per user. We will compare alternative strategies based on all of these degrees of freedom. The measures of accuracy are {\it precision} (based on known accounts suspended by the media sites) and {\it recall} (based on crowd response on sampled data).
+
+\subsection{\Tonetwo}
+
+
+%\paragraph{Problem:} 
+Account handover can be a result of {\it selling}, {\it hijacking} or {\it sharing}. For example, buying and selling social media entities (such as user accounts, likes, retweets, pins, etc.) are openly done online \cite{buyFollower,buyAccount1,buyAccount2,Thomas:13}. However, such handover almost always initiates untrustworthy events. For example, the followers of a sold account will see undesired content from the new owner. The buyer may receive unverified and useless bot followers too. For example, we bought 300 ``real'' followers on Pinterest, among them 278 accounts were certainly bots with identical inactive profiles.
+
+%T.4.2 example
+\paragraph{Example:} In social media sites, any account can change its url or account name. The rational behavior for a popular user with more than a million followers is not to change its url as search engines already know the popularity of the url. However in Pinterest, we observe many popular appearing accounts that change their {\it old url} to a {\it new url} and the {\it old url} is picked up by another account immediately (Figure \ref{fig:intro}(middle)). We believe this is a coordinated behavior to share the popularity of the url among accounts to gain followers. 
+
+%Upon further investigation, we see many accounts growing at a constant rate of 100 followers per day reaching upto million followers.
+
+% This is suspicious because a well-earned popularity is rarely sold or given away unless it is easily achieved.
+
+%Once a url-A is changed to url-B, a request for url-A will be redirected to url-B.
+
+\paragraph{Related Work:} Detecting account sharing or selling in social media is relatively harder than detecting hijacked accounts \cite{Thomas2014}. Multivariate change detection is typically done by modeling the time series using a dynamical system and any significant variation from the predicted value is flagged as a ``change'' \cite{Abraham79,Ma2003}. We group such methods as statistical change detection, while our approach is to detect correlated changes among the variables.
+
+
+\paragraph{Proposed Activity:}
+
+The key challenges in the proposed monitoring task are: first, sudden changes are not always account handover, and second, changes may occur at any subset of the variables sampled at regular intervals. Examples of variables include number of posts, number of followers, changes in profile picture, changes in link to other social network, etc. We will monitor each variable individually to identify bursts, drops and rises in them using standard techniques \cite{Vlachos:04} and, thus, convert the continuous variables into {\it discrete pulses} of changes which will be amenable to the techniques developed in earlier tasks.
+\textbf{Evaluation:} We will compare the account profiles manually {\it before} and {\it after} the changes are detected to {\it evaluate} the algorithms. We will save the profiles periodically and consult the Internet Archive \cite{Archive} to facilitate that.
+
+
+%Correlated changes can be caused by account deactivation, server unavailability, account transactions and several other cases. For proper evaluation,  
+
+\subsection{\Tonethree}
+
+%\paragraph{Problem:} 
+Review fraud is widespread in online review sites. Detecting untruthful reviews is an active area of research which often focuses on the content and the behavioral patterns of the users who write reviews. Since, it is easy to create accounts on social media, resourceful fraudulent users are no longer challenged by simple fraud detection. Therefore, we focus on identifying the beneficiary (e.g. business) instead of the wrongdoer.
+
+\paragraph{Example:} 
+
+We observe several interesting temporal patterns emerging in the frequencies of hotel reviews. First, bursts in reviews increasing the average rating is commonly observed. Second, missing seasonality in review frequency shows manipulation by hotels or sites. Third, oscillating high and low ratings indicate that higher ratings are deliberately placed in the top of the chronological review list for a good first impression. 
+
+%All these patterns are too regular to be true among the peer hotels at the same neighborhood with the same luxury-star-rating.
+
+\paragraph{Related Work:}
+
+Fraud identification at the text and user level is well-studied  \cite{Ott:11,Jindal:08,Morales:13,Chau:06}. The authors in \cite{Jindal:08} separate their features into reviewer-centric, review-centric, and product-centric features. These features are mostly static ignoring the temporal aspect. Fraud detection using graphical/network structure is studied in \cite{Akoglu:13,Chau:06,Wang:11} where the authors exploit network effects and clique structures among reviewers and products to identify fraud. The only temporal pattern that has been identified as a fraud indicator is the {\it correlated burst} \cite{Xie:12,Fei:13}. Our preliminary work \cite{Minnich2015} shows {\it oscillation} and missing {\it seasonality} patterns.
+
+% Review-centric features include word count, text length, position and keyword-frequency of reviews and their deviations. Reviewer-centric features include review count, average rating over all one's reviews,  and standard deviations of all those metrics, along with time of first review.
+ %Do we need this,  good and bad reviews a reviewer wrote.
+  %Product-centric features include several  metrics such as average price and average rating. 
+
+
+
+
+\paragraph{Proposed Activity:} {\it We propose to compile the frequency time series of reviews for products and businesses and identify anomalous patterns with respect to their peers.}
+We propose to develop ensembles of outlier detection methods for time series data. Researchers proposed algorithms combining outlier detection methods with the hope that each method makes independent mistakes, increasing the overall accuracy of the techniques \cite{Schubert:12,Charu2013}. We propose to ensemble anomaly detection algorithms for time series data including LOF (local outlier factor), hierarchical anomaly detection, discords and global outlier methods \cite{Chandola:09}. We will conduct \textbf{\textit{incremental evaluation}} of individual outlier detection algorithms. To assess the quality of the detected review frauds (precision and recall), we will ask the ``crowd'' if they agree with our reasoning.
+
+
+\subsection{\Tonefour}
+
+
+\paragraph{Problem:} Sponsored users are typically hired in groups. For example, before the Turkish election in June 2015, the ruling party (AKP) hired more than ten thousand trolls\footnote{Troll is a user who posts inflammatory, extraneous, or abusive messages in any discussion thread \cite{Bishop2012}.} (aka ``aktrolls'') to control public opinion \cite{aktroll}. Sponsored user accounts are often collectively owned and perform social activities hiding their financial interest.
+Typically, trolls have similar work schedules, and they target political entities (e.g. parties, leaders, etc.) to defame, abuse and attack on social media. Over time, the groups change by adding, sharing and removing troll accounts. We identify a few aktrolls in our initial work that show dynamic correlated clusters. These trolls do not correlate over a long duration, however, they form small groups for a short period of time. 
+
+\paragraph{Related Work:}
+
+PI Mueen \cite{Mueen:14a} developed an algorithm to monitor dynamic clusters in climate data (one observation every 16 days), which is almost static compared to social media data (48 Hz). Supervised learning techniques to classify trolls in online social network is shown in \cite{Patxi2014}. Unsupervised method to identify political abuse in micro-blogging sites is shown in \cite{Ratkiewicz2011}.
+
+
+%Anytime clustering algorithms can work in a streaming settings. Many anytime clustering algorithms have been proposed in the literature.
+
+
+\paragraph{Proposed Activity:}
+
+We propose to extract two types of time series to monitor clusters. First, the activity streams per {\it account} and second, the activity streams per {\it word groups} (topics, n-grams and bag-of-words).
+We plan to maintain a pair-wise distance matrix over all the time series at real time. We propose to cluster the time series at periodic checkpoints and identify {\it formation}, {\it merging}, {\it splitting} and {\it disbanding} of clusters.
+
+We will explore distance-based clustering techniques such as $k$-medoids, hierarchical clustering and DBSCAN under the general {\it anytime} framework \cite{Zilberstein:96}. We will exploit the clustering of the previous checkpoint as the seed for current timestamp. The challenge is that the clusters at current timestamp do not map one-to-one to the clusters at the next timestamp. In the presence of noise, individual time series move frequently in and out of clusters creating trivial formation and disbanding. We propose to develop an algorithm to extract {\it nontrivial dynamics} of clusters. 
+%\paragraph{Evaluation Plan:}
+\textbf{Evaluation:} We will compare our processing rate with the state-of-the-art anytime clustering algorithms when they are applied to dynamic clustering of time series data. We will merge clusters from all the timestamps to identify larger correlated groups of troll. After merging, we will have the clusters {\it evaluated} by the crowd.
+
+

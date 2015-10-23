@@ -1,0 +1,49 @@
+Term frequency or word frequency is a measure commonly used in information retrieval to match a query term with a document.
+
+Data:
+
+What people are reading and writing are captured in the following two datasets. We aslo need what people are sharing, liking, communicating, viewing and etc.
+
+1. Search log: We will have term frequency time series from wikipedia. It will be per day access of pages and from that we will calcualate term frequency time series.
+
+2. Tweet log: We will calculate how many tweets contain a specific word everyday to get the frequency.
+
+A producer consumer model can be used. How many tweets contain obama and how many of them were retweeted and shared?
+
+
+
+
+What is censorship? Prevent the flow of natural information by imposing restrictions. You can see effect ot 
+
+
+Derived time series.
+
+1. From the fequency time series, we will generate sentiment pulses.
+2. From the search log, we will generate precedence ans succession time series as second order information.
+
+
+
+How does N-gram time series look in the data?
+
+Obama : 
+
+Hate  :
+
+Hate Obama:
+
+Correlation between Obama and Hate Obama  will indicate decreasing popularity,
+
+If an n-gram correlates with a sub n-1 gram, we can infer something from it.
+
+
+Noun phrases may work differently than other phrases.
+
+Correlated spikes in usain bolt and justin gatlin may represent the races the competed together.
+
+Correlation shows both positive association (common races) and negative association (chilling effect)
+
+
+What are the technical challenges?
+
+Scalability challenge is not much because there can be at most 300K words. Scalability can be an issue if we go for n-grams. and their crelation
+	

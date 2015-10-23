@@ -1,0 +1,274 @@
+\documentclass[11pt]{article}
+\input{nsfformat.sty}
+
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\renewcommand{\sfdefault}{phv}
+\renewcommand{\rmdefault}{ptm}
+
+\usepackage{url}
+\usepackage{wrapfig}
+
+\usepackage[compact]{titlesec}
+
+%\usepackage{CJK}
+%\usepackage[T1]{fontenc}
+\usepackage{bibspacing}
+\setlength{\bibspacing}{\baselineskip}
+
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+%\usepackage{subfigure}
+\usepackage{subfig}
+\newsavebox{\bigdamnbox}
+\usepackage{color}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{graphics}
+\usepackage{wrapfig}
+\usepackage{capt-of}
+\usepackage{paralist}
+\usepackage{pdfpages}
+
+
+\usepackage{geometry}
+\geometry{
+  top=1in,            % <-- you want to adjust this
+  inner=1in,
+  outer=1in,
+  bottom=1in,
+  headheight=3ex,       % <-- and this
+  headsep=2ex,          % <-- and this
+}\usepackage{fancyhdr}
+%\pagestyle{fancyplain}
+%\lhead{\footnotesize Advances in Unsupervised Temporal Pattern Mining and its Application to Social Media Abuse}
+%\rhead{\footnotesize Abdullah Mueen}
+%\cfoot{\fancyplain{}{\thepage}}
+
+\renewcommand{\headrulewidth}{0.1pt}
+
+
+
+\usepackage{caption}
+\captionsetup{font={footnotesize,stretch=1.0}}
+
+\algtext*{EndIf}% Remove "end if" text
+\algtext*{EndFor}% Remove "end if" text
+\algtext*{EndWhile}% Remove "end if" text
+
+
+\definecolor{gray}{rgb}{1,0,0}
+\newcommand{\cmt}[1]{{\color{gray}[\textsf{\bf {\em XXX: #1}}]}}
+\newcommand{\myspace}[1]{}
+
+\newtheorem{problem}{Problem}
+\newtheorem{pattern}{Pattern}
+\newtheorem{theorem}{Theorem}%[section]
+\newtheorem{alg}[theorem]{Algorithm}%[section]
+\newtheorem{lemma}{Lemma}%[section]
+\newtheorem{observation}{Observation}%[section]
+\newtheorem{definition}{Definition}
+
+\def \bb{\blacktriangleright}
+
+\newcommand{\Paragraph}[1]{{\vspace{0.1in}\noindent {\bf #1.}}}
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+%\newcommand{\Tone}{Data Integration from Multiple Sites}
+
+
+\newcommand{\Tone}{Improving Real Time Monitoring of Social Media Users}
+
+\newcommand{\Toneone}{Detecting Bots: Correlated User Groups}
+\newcommand{\Tonetwo}{Detecting Account Handover: Drastic Profile Changes}
+\newcommand{\Tonethree}{Detecting Review Abuse: Anomalous Patterns}
+\newcommand{\Tonefour}{Detecting Trolls: Monitoring Dynamic User Groups}
+
+
+\newcommand{\Ttwo}{Augmenting Temporal Mining with Heterogeneous Context}
+
+\newcommand{\Ttwoone}{Data Integration}
+\newcommand{\Ttwotwo}{Clique Correlation Pattern}
+\newcommand{\Ttwothree}{Semantic Anomaly in Social Trajectory}
+\newcommand{\Ttwofour}{Tensor Motif Mining}
+
+
+\newcommand{\Tthree}{Innovating Invariances in Temporal Mining}
+
+\newcommand{\Tthreeone}{Warping Invariant Hashing}
+\newcommand{\Tthreetwo}{Maximally Invariant Anomaly}
+\newcommand{\Tthreethree}{Minimally Invariant Repetitions}
+
+
+
+
+\newtheorem{task}{Task}
+
+\newcommand{\squishlist}{
+ \begin{list}{$\bullet$}
+  { \setlength{\itemsep}{0pt}
+     \setlength{\parsep}{3pt}
+     \setlength{\topsep}{3pt}
+     \setlength{\partopsep}{0pt}
+     \setlength{\leftmargin}{1.5em}
+     \setlength{\labelwidth}{1em}
+     \setlength{\labelsep}{0.5em} } }
+
+\newcommand{\squishend}{
+  \end{list}  }
+
+% fixme comments
+\usepackage{soul}          % for highlighting comments
+\usepackage[draft,inline,nomargin]{fixme}
+%\usepackage[final,inline,nomargin]{fixme}
+
+\newcommand{\hlfixme}[1]{\fixme{\hl{#1}}}
+\newcommand{\hlfxnote}[1]{\fxnote{\hl{#1}}}
+
+\newcommand{\reminder}[1]{{\textcolor{red}{ #1}}}
+% unquote the below to remove reminders
+%\newcommand{\eatreminder}{  \renewcommand{\reminder}{\hide} }
+
+\renewcommand{\baselinestretch}{0.90}
+
+\newenvironment{packed_enum}{
+\begin{enumerate}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{enumerate}}
+
+\newenvironment{packed_item}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+
+%\title{\vspace{-0.65in}\large {\Large CAREER: Mining Unsupervised Temporal Patterns to Detect Abuse in Social Media}}
+\title{\vspace{-0.65in}working tittle: {\LARGE Censorship meets Temporal mining}}
+
+\date{}
+
+
+\usepackage{enumitem}
+\usepackage{setspace}
+%\doublespacing
+
+
+\begin{document}
+
+
+%\begin{CJK}{UTF8}{}
+\maketitle
+\vspace{-1cm}
+%\noindent{\large {\bf Project Summary}}
+\smallskip
+\input{00ProjectSummary}
+\thispagestyle{empty}
+\newpage
+
+%\input{participants}
+%\tableofcontents
+
+
+\setcounter{page}{1}
+
+
+%\renewcommand{\baselinestretch}{0.9025}
+%\fontsize{11}{14}\selectfont
+
+%\noindent{\large {\bf Project Description}}
+%\bigskip
+%
+%\input{10intro}
+%
+
+
+
+\section{Introduction} \label{sec:motivation}
+\input{10Introduction}
+
+
+
+
+%
+%\section{Background on time series mining} \label{sec:bg}
+%\input{25Background}
+
+%\section{Proposed Work} \label{sec:tasks}
+%\input{33ProposedM}
+%\input{30Task1}
+%
+%\input{40Task2}
+%\input{50Task3}
+%\input{32Task2}
+%
+%\section{More details about previous, ongoing, and proposed work} \label{sec:details}
+%\input{30details}
+%
+
+%
+%\section{Broader impacts} \label{sec:broaderimpacts}
+%\input{90broaderimpacts}
+%
+
+
+%\input{7Educational}
+%
+%\section{Results from prior NSF support} \label{sec:priornsfsupport}
+%\input{99priornsfsupport}
+%
+%\newpage
+%\renewcommand{\thepage}{SM-\arabic{page}}  % page numbers for supplemental materials will be SM-#
+%\setcounter{page}{1}
+%\section{Collaboration Plan}
+%\input{collaboration}
+%
+
+
+
+%
+%\newpage
+%\renewcommand{\thepage}{SM-\arabic{page}}  % page numbers for supplemental materials will be SM-#
+%\setcounter{page}{1}
+%\section{Postdoctoral Research Mentoring Plan}
+%\input{postdocmentoring}
+
+\newpage
+%
+\pagestyle{fancyplain}
+
+\setcounter{page}{1}
+\renewcommand{\thepage}{R-\arabic{page}}
+\cfoot{\fancyplain{}{\thepage}}
+
+  % page numbers for references will be R-#
+
+% \setcounter{page}{1}
+% \section{Collaboration Plan}
+% \input{collaborationplan}
+% \newpage
+%\setcounter{page}{1}
+%\pagestyle{empty}
+
+
+\bibliographystyle{abbrvkeepcaps}
+
+\bibliography{urlsCareer,RefCareer}
+
+
+
+\end{document}
+ 
